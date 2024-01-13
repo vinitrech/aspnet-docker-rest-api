@@ -3,7 +3,7 @@ using ASPNETDockerRestAPI.Repository;
 
 namespace ASPNETDockerRestAPI.Business.Implementations
 {
-    public class PersonBusinessImplementation(IPersonRepository personRepository) : IPersonBusiness
+    public class PersonsBusinessImplementation(IPersonsRepository personRepository) : IPersonsBusiness
     {
         public Person Create(Person person) => personRepository.Create(person);
         public List<Person> FindAll() => personRepository.FindAll();

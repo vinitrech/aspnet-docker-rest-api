@@ -1,8 +1,8 @@
 ﻿using ASPNETDockerRestAPI.Models;
 
-namespace ASPNETDockerRestAPI.Business
+namespace ASPNETDockerRestAPI.Repository
 {
-    public interface IPersonBusiness
+    public interface IPersonsRepository
     {
         Person Create(Person person);
         Person? FindById(long id);

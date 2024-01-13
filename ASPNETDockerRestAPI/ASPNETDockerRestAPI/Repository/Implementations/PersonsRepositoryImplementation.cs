@@ -2,7 +2,7 @@
 
 namespace ASPNETDockerRestAPI.Repository.Implementations
 {
-    public class PersonRepositoryImplementation(MySQLContext dbContext) : IPersonRepository
+    public class PersonsRepositoryImplementation(MySQLContext dbContext) : IPersonsRepository
     {
         public Person Create(Person person)
         {

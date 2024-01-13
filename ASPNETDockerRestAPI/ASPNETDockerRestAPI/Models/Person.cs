@@ -2,7 +2,7 @@
 
 namespace ASPNETDockerRestAPI.Models
 {
-    [Table("person")]
+    [Table("persons")]
     public class Person
     {
         [Column("id")]
