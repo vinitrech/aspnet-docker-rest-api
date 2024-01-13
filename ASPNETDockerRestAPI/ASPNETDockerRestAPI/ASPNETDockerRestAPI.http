@@ -1,0 +1,6 @@
+@ASPNETDockerRestAPI_HostAddress = http://localhost:5276
+
+GET {{ASPNETDockerRestAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
