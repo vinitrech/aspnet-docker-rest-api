@@ -2,38 +2,34 @@
 
 namespace ASPNETDockerRestAPI.Services.Implementations
 {
-    public class PersonServiceImplementation : IPersonService
+    public class PersonServiceImplementation(MySQLContext dbContext) : IPersonService
     {
         public Person Create(Person person)
         {
+            dbContext.Add(person);
+            dbContext.SaveChanges();
+
+            return person;
+        }
+
+        public List<Person> FindAll()
+        {
+            return [.. dbContext.Persons];
+        }
+
+        public Person? FindById(long id) => dbContext.Find<Person>(id);
+
+        public Person Update(Person person)
+        {
+            dbContext.Update(person);
+            dbContext.SaveChanges();
+
             return person;
         }
 
         public void Delete(long id)
         {
-
-        }
-
-        public List<Person> FindAll()
-        {
-            return [new(), new()];
-        }
-
-        public Person FindById(long id)
-        {
-            return new()
-            {
-                Address = "address",
-                FirstName = "name",
-                Gender = "male",
-                Id = 1,
-                LastName = "lastname"
-            };
-        }
-
-        public Person Update(Person person)
-        {
-            return person;
+            dbContext.Remove(FindById(id) ?? throw new Exception("Id not found"));
         }
     }
 }

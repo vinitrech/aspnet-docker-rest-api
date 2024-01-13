@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using ASPNETDockerRestAPI.Models;
 using ASPNETDockerRestAPI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -5,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace ASPNETDockerRestAPI.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class PersonController(
         ILogger<PersonController> logger,
         IPersonService personService
