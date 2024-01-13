@@ -1,6 +1,6 @@
 using Asp.Versioning;
 using ASPNETDockerRestAPI.Models;
-using ASPNETDockerRestAPI.Services;
+using ASPNETDockerRestAPI.Business;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASPNETDockerRestAPI.Controllers
@@ -10,19 +10,19 @@ namespace ASPNETDockerRestAPI.Controllers
     [Route("api/v{version:apiVersion}/[controller]")]
     public class PersonController(
         ILogger<PersonController> logger,
-        IPersonService personService
+        IPersonBusiness personBusiness
         ) : ControllerBase
     {
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(personService.FindAll());
+            return Ok(personBusiness.FindAll());
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(long id)
         {
-            var person = personService.FindById(id);
+            var person = personBusiness.FindById(id);
 
             if (person is null)
             {
@@ -40,7 +40,7 @@ namespace ASPNETDockerRestAPI.Controllers
                 return BadRequest();
             }
 
-            return Ok(personService.Create(person));
+            return Ok(personBusiness.Create(person));
         }
 
         [HttpPut]
@@ -51,20 +51,20 @@ namespace ASPNETDockerRestAPI.Controllers
                 return BadRequest();
             }
 
-            return Ok(personService.Update(person));
+            return Ok(personBusiness.Update(person));
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-            var person = personService.FindById(id);
+            var person = personBusiness.FindById(id);
 
             if (person is null)
             {
                 return NotFound();
             }
 
-            personService.Delete(id);
+            personBusiness.Delete(id);
 
             return NoContent();
         }

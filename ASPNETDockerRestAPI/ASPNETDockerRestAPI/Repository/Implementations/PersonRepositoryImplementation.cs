@@ -1,8 +1,8 @@
 ﻿using ASPNETDockerRestAPI.Models;
 
-namespace ASPNETDockerRestAPI.Services.Implementations
+namespace ASPNETDockerRestAPI.Repository.Implementations
 {
-    public class PersonServiceImplementation(MySQLContext dbContext) : IPersonService
+    public class PersonRepositoryImplementation(MySQLContext dbContext) : IPersonRepository
     {
         public Person Create(Person person)
         {
