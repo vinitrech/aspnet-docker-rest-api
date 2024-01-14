@@ -1,7 +1,7 @@
 using Asp.Versioning;
-using ASPNETDockerRestAPI.Models;
 using ASPNETDockerRestAPI.Business;
 using Microsoft.AspNetCore.Mvc;
+using ASPNETDockerRestAPI.Dtos;
 
 namespace ASPNETDockerRestAPI.Controllers
 {
@@ -33,7 +33,7 @@ namespace ASPNETDockerRestAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] PersonModel person)
+        public IActionResult Post([FromBody] PersonDto person)
         {
             if (person is null)
             {
@@ -44,7 +44,7 @@ namespace ASPNETDockerRestAPI.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] PersonModel person)
+        public IActionResult Put([FromBody] PersonDto person)
         {
             if (person is null)
             {

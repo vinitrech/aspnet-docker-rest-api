@@ -1,13 +1,13 @@
-﻿using ASPNETDockerRestAPI.Models;
+﻿using ASPNETDockerRestAPI.Dtos;
 
 namespace ASPNETDockerRestAPI.Business
 {
     public interface IBooksBusiness
     {
-        Book Create(Book book);
-        Book? FindById(long id);
-        List<Book> FindAll();
-        Book Update(Book book);
+        BookDto Create(BookDto bookDTO);
+        BookDto? FindById(long id);
+        List<BookDto> FindAll();
+        BookDto Update(BookDto bookDTO);
         void Delete(long id);
     }
 }

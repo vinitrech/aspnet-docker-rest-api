@@ -2,13 +2,13 @@
 
 namespace ASPNETDockerRestAPI.Models
 {
-    public class MySQLContext : DbContext
+    public class MySqlContext : DbContext
     {
-        protected MySQLContext()
+        protected MySqlContext()
         {
         }
 
-        public MySQLContext(DbContextOptions<MySQLContext> options) : base(options)
+        public MySqlContext(DbContextOptions<MySqlContext> options) : base(options)
         {
         }
     }

@@ -17,7 +17,7 @@ builder.Services.AddApiVersioning();
 
 var connection = builder.Configuration["MySQLConnection:MySQLConnectionString"];
 
-builder.Services.AddDbContext<MySQLContext>(options => options.UseMySql(
+builder.Services.AddDbContext<MySqlContext>(options => options.UseMySql(
     connection,
     ServerVersion.AutoDetect(connection)
 ));

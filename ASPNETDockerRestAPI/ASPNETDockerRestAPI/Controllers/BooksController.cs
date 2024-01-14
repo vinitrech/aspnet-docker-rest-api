@@ -2,6 +2,7 @@ using Asp.Versioning;
 using ASPNETDockerRestAPI.Models;
 using ASPNETDockerRestAPI.Business;
 using Microsoft.AspNetCore.Mvc;
+using ASPNETDockerRestAPI.Dtos;
 
 namespace ASPNETDockerRestAPI.Controllers
 {
@@ -33,7 +34,7 @@ namespace ASPNETDockerRestAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Book book)
+        public IActionResult Post([FromBody] BookDto book)
         {
             if (book is null)
             {
@@ -44,7 +45,7 @@ namespace ASPNETDockerRestAPI.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] Book book)
+        public IActionResult Put([FromBody] BookDto book)
         {
             if (book is null)
             {

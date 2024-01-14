@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace ASPNETDockerRestAPI.Models
 {
     [Table("books")]
-    public class Book : BaseModel
+    public class BookModel : BaseModel
     {
         [Column("author")]
         public string Author { get; set; }

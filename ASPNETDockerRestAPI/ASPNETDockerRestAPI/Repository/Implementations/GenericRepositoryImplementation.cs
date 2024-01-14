@@ -6,7 +6,7 @@ using Serilog;
 
 namespace ASPNETDockerRestAPI.Repository.Implementations
 {
-    public class GenericRepositoryImplementation<T>(MySQLContext dbContext) : IGenericRepository<T> where T : BaseModel
+    public class GenericRepositoryImplementation<T>(MySqlContext dbContext) : IGenericRepository<T> where T : BaseModel
     {
         private readonly DbSet<T> _dataset = dbContext.Set<T>();
 

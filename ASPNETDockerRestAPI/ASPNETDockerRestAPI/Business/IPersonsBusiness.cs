@@ -1,13 +1,13 @@
-﻿using ASPNETDockerRestAPI.Models;
+﻿using ASPNETDockerRestAPI.Dtos;
 
 namespace ASPNETDockerRestAPI.Business
 {
     public interface IPersonsBusiness
     {
-        PersonModel Create(PersonModel person);
-        PersonModel? FindById(long id);
-        List<PersonModel> FindAll();
-        PersonModel Update(PersonModel person);
+        PersonDto Create(PersonDto personDTO);
+        PersonDto? FindById(long id);
+        List<PersonDto> FindAll();
+        PersonDto Update(PersonDto personDTO);
         void Delete(long id);
     }
 }
