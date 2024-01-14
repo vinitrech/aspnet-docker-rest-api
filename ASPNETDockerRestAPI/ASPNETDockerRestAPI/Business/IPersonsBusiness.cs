@@ -4,10 +4,10 @@ namespace ASPNETDockerRestAPI.Business
 {
     public interface IPersonsBusiness
     {
-        Person Create(Person person);
-        Person? FindById(long id);
-        List<Person> FindAll();
-        Person Update(Person person);
+        PersonModel Create(PersonModel person);
+        PersonModel? FindById(long id);
+        List<PersonModel> FindAll();
+        PersonModel Update(PersonModel person);
         void Delete(long id);
     }
 }

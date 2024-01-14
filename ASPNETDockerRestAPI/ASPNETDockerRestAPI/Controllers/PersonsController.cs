@@ -33,7 +33,7 @@ namespace ASPNETDockerRestAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Person person)
+        public IActionResult Post([FromBody] PersonModel person)
         {
             if (person is null)
             {
@@ -44,7 +44,7 @@ namespace ASPNETDockerRestAPI.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] Person person)
+        public IActionResult Put([FromBody] PersonModel person)
         {
             if (person is null)
             {

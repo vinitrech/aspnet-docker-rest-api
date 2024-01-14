@@ -2,7 +2,7 @@
 
 namespace ASPNETDockerRestAPI.Repository.Generic
 {
-    public interface IGenericRepository<T> where T : BaseEntity
+    public interface IGenericRepository<T> where T : BaseModel
     {
         T Create(T entity);
         T? FindById(long id);

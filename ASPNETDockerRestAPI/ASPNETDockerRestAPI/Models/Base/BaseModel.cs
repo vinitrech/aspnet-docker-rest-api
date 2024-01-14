@@ -2,7 +2,7 @@
 
 namespace ASPNETDockerRestAPI.Models.Base
 {
-    public class BaseEntity
+    public class BaseModel
     {
         [Column("id")]
         public long Id { get; set; }
