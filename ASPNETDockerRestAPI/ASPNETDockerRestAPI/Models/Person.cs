@@ -1,13 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using ASPNETDockerRestAPI.Models.Base;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ASPNETDockerRestAPI.Models
 {
     [Table("persons")]
-    public class Person
+    public class Person : BaseEntity
     {
-        [Column("id")]
-        public long Id { get; set; }
-
         [Column("first_name")]
         public string FirstName { get; set; }
 

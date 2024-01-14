@@ -2,11 +2,11 @@ using ASPNETDockerRestAPI.Models;
 using ASPNETDockerRestAPI.Business;
 using ASPNETDockerRestAPI.Business.Implementations;
 using Microsoft.EntityFrameworkCore;
-using ASPNETDockerRestAPI.Repository;
 using ASPNETDockerRestAPI.Repository.Implementations;
 using MySqlConnector;
 using EvolveDb;
 using Serilog;
+using ASPNETDockerRestAPI.Repository.Generic;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,9 +28,8 @@ if (builder.Environment.IsDevelopment())
 }
 
 builder.Services.AddScoped<IPersonsBusiness, PersonsBusinessImplementation>();
-builder.Services.AddScoped<IPersonsRepository, PersonsRepositoryImplementation>();
 builder.Services.AddScoped<IBooksBusiness, BooksBusinessImplementation>();
-builder.Services.AddScoped<IBooksRepository, BooksRepositoryImplementation>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositoryImplementation<>));
 
 var app = builder.Build();
 

@@ -1,9 +1,9 @@
 ﻿using ASPNETDockerRestAPI.Models;
-using ASPNETDockerRestAPI.Repository;
+using ASPNETDockerRestAPI.Repository.Generic;
 
 namespace ASPNETDockerRestAPI.Business.Implementations
 {
-    public class BooksBusinessImplementation(IBooksRepository booksRepository) : IBooksBusiness
+    public class BooksBusinessImplementation(IGenericRepository<Book> booksRepository) : IBooksBusiness
     {
         public Book Create(Book book) => booksRepository.Create(book);
         public List<Book> FindAll() => booksRepository.FindAll();
