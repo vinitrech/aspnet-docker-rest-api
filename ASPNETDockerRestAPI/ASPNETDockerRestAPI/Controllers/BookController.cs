@@ -7,22 +7,22 @@ namespace ASPNETDockerRestAPI.Controllers
 {
     [ApiController]
     [ApiVersion("1")]
-    [Route("api/v{version:apiVersion}/[controller]")]
-    public class BooksController(
-        ILogger<BooksController> logger,
-        IBooksBusiness booksBusiness
+    [Route("api/v{version:apiVersion}/books")]
+    public class BookController(
+        ILogger<BookController> logger,
+        IBookBusiness bookBusiness
         ) : ControllerBase
     {
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(booksBusiness.FindAll());
+            return Ok(bookBusiness.FindAll());
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(long id)
         {
-            var book = booksBusiness.FindById(id);
+            var book = bookBusiness.FindById(id);
 
             if (book is null)
             {
@@ -40,7 +40,7 @@ namespace ASPNETDockerRestAPI.Controllers
                 return BadRequest();
             }
 
-            return Ok(booksBusiness.Create(book));
+            return Ok(bookBusiness.Create(book));
         }
 
         [HttpPut]
@@ -51,20 +51,20 @@ namespace ASPNETDockerRestAPI.Controllers
                 return BadRequest();
             }
 
-            return Ok(booksBusiness.Update(book));
+            return Ok(bookBusiness.Update(book));
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-            var book = booksBusiness.FindById(id);
+            var book = bookBusiness.FindById(id);
 
             if (book is null)
             {
                 return NotFound();
             }
 
-            booksBusiness.Delete(id);
+            bookBusiness.Delete(id);
 
             return NoContent();
         }

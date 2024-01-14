@@ -2,12 +2,12 @@
 
 namespace ASPNETDockerRestAPI.Business
 {
-    public interface IBooksBusiness
+    public interface IBookBusiness
     {
-        BookDto Create(BookDto bookDTO);
+        BookDto Create(BookDto bookDto);
         BookDto? FindById(long id);
         List<BookDto> FindAll();
-        BookDto Update(BookDto bookDTO);
+        BookDto Update(BookDto bookDto);
         void Delete(long id);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace ASPNETDockerRestAPI.Business
 {
-    public interface IPersonsBusiness
+    public interface IPersonBusiness
     {
         PersonDto Create(PersonDto personDTO);
         PersonDto? FindById(long id);

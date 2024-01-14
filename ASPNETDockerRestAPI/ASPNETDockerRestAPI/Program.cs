@@ -29,10 +29,10 @@ if (builder.Environment.IsDevelopment())
     MigrateDatabase(connection);
 }
 
-builder.Services.AddScoped<IPersonsBusiness, PersonsBusinessImplementation>();
-builder.Services.AddScoped<IBooksBusiness, BooksBusinessImplementation>();
-builder.Services.AddScoped<IPersonsParser, PersonsParserImplementation>();
-builder.Services.AddScoped<IBooksParser, BooksParserImplementation>();
+builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
+builder.Services.AddScoped<IBookBusiness, BookBusinessImplementation>();
+builder.Services.AddScoped<IPersonParser, PersonParserImplementation>();
+builder.Services.AddScoped<IBookParser, BookParserImplementation>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositoryImplementation<>));
 
 var app = builder.Build();

@@ -5,13 +5,14 @@ using ASPNETDockerRestAPI.Repository.Generic;
 
 namespace ASPNETDockerRestAPI.Business.Implementations
 {
-    public class BooksBusinessImplementation(IGenericRepository<BookModel> bookRepository, IBooksParser bookParser) : IBooksBusiness
+    public class BookBusinessImplementation(IGenericRepository<BookModel> bookRepository, IBookParser bookParser) : IBookBusiness
     {
-        public BookDto Create(BookDto bookDTO)
+        public BookDto Create(BookDto bookDto)
         {
-            bookRepository.Create(bookParser.Parse(bookDTO));
+            var bookModel = bookParser.Parse(bookDto);
+            var createdBook = bookRepository.Create(bookModel);
 
-            return bookDTO;
+            return bookParser.Parse(createdBook);
         }
 
         public List<BookDto> FindAll()
@@ -33,11 +34,12 @@ namespace ASPNETDockerRestAPI.Business.Implementations
             return bookParser.Parse(book);
         }
 
-        public BookDto Update(BookDto bookDTO)
+        public BookDto Update(BookDto bookDto)
         {
-            bookRepository.Update(bookParser.Parse(bookDTO));
+            var bookModel = bookParser.Parse(bookDto);
+            var updatedBook = bookRepository.Update(bookModel);
 
-            return bookDTO;
+            return bookParser.Parse(updatedBook);
         }
 
         public void Delete(long id) => bookRepository.Delete(id);

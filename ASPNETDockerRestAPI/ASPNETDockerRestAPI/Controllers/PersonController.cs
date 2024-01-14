@@ -7,22 +7,22 @@ namespace ASPNETDockerRestAPI.Controllers
 {
     [ApiController]
     [ApiVersion("1")]
-    [Route("api/v{version:apiVersion}/[controller]")]
-    public class PersonsController(
-        ILogger<PersonsController> logger,
-        IPersonsBusiness personsBusiness
+    [Route("api/v{version:apiVersion}/persons")]
+    public class PersonController(
+        ILogger<PersonController> logger,
+        IPersonBusiness personBusiness
         ) : ControllerBase
     {
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(personsBusiness.FindAll());
+            return Ok(personBusiness.FindAll());
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(long id)
         {
-            var person = personsBusiness.FindById(id);
+            var person = personBusiness.FindById(id);
 
             if (person is null)
             {
@@ -40,7 +40,7 @@ namespace ASPNETDockerRestAPI.Controllers
                 return BadRequest();
             }
 
-            return Ok(personsBusiness.Create(person));
+            return Ok(personBusiness.Create(person));
         }
 
         [HttpPut]
@@ -51,20 +51,20 @@ namespace ASPNETDockerRestAPI.Controllers
                 return BadRequest();
             }
 
-            return Ok(personsBusiness.Update(person));
+            return Ok(personBusiness.Update(person));
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-            var person = personsBusiness.FindById(id);
+            var person = personBusiness.FindById(id);
 
             if (person is null)
             {
                 return NotFound();
             }
 
-            personsBusiness.Delete(id);
+            personBusiness.Delete(id);
 
             return NoContent();
         }

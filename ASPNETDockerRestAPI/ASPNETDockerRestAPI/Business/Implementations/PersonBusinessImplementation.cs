@@ -5,13 +5,14 @@ using ASPNETDockerRestAPI.Repository.Generic;
 
 namespace ASPNETDockerRestAPI.Business.Implementations
 {
-    public class PersonsBusinessImplementation(IGenericRepository<PersonModel> personRepository, IPersonsParser personParser) : IPersonsBusiness
+    public class PersonBusinessImplementation(IGenericRepository<PersonModel> personRepository, IPersonParser personParser) : IPersonBusiness
     {
-        public PersonDto Create(PersonDto personDTO)
+        public PersonDto Create(PersonDto personDto)
         {
-            personRepository.Create(personParser.Parse(personDTO));
+            var personModel = personParser.Parse(personDto);
+            var createdPerson = personRepository.Create(personModel);
 
-            return personDTO;
+            return personParser.Parse(createdPerson);
         }
 
         public List<PersonDto> FindAll()
@@ -28,11 +29,12 @@ namespace ASPNETDockerRestAPI.Business.Implementations
             return personParser.Parse(book);
         }
 
-        public PersonDto Update(PersonDto personDTO)
+        public PersonDto Update(PersonDto personDto)
         {
-            personRepository.Update(personParser.Parse(personDTO));
+            var personModel = personParser.Parse(personDto);
+            var updatedPerson = personRepository.Update(personModel);
 
-            return personDTO;
+            return personParser.Parse(updatedPerson);
         }
 
         public void Delete(long id) => personRepository.Delete(id);
