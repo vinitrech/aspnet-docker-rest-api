@@ -5,7 +5,7 @@ using ASPNETDockerRestAPI.Repository.Generic;
 
 namespace ASPNETDockerRestAPI.Business.Implementations
 {
-    public class BooksBusinessImplementation(IGenericRepository<BookModel> bookRepository, IBookParser bookParser) : IBooksBusiness
+    public class BooksBusinessImplementation(IGenericRepository<BookModel> bookRepository, IBooksParser bookParser) : IBooksBusiness
     {
         public BookDto Create(BookDto bookDTO)
         {

@@ -5,7 +5,7 @@ using ASPNETDockerRestAPI.Repository.Generic;
 
 namespace ASPNETDockerRestAPI.Business.Implementations
 {
-    public class PersonsBusinessImplementation(IGenericRepository<PersonModel> personRepository, IPersonParser personParser) : IPersonsBusiness
+    public class PersonsBusinessImplementation(IGenericRepository<PersonModel> personRepository, IPersonsParser personParser) : IPersonsBusiness
     {
         public PersonDto Create(PersonDto personDTO)
         {

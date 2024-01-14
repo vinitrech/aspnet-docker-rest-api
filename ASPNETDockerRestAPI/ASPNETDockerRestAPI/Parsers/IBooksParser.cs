@@ -3,7 +3,7 @@ using ASPNETDockerRestAPI.Models;
 
 namespace ASPNETDockerRestAPI.Parsers
 {
-    public interface IBookParser
+    public interface IBooksParser
     {
         BookDto Parse(BookModel origin);
         BookModel Parse(BookDto origin);

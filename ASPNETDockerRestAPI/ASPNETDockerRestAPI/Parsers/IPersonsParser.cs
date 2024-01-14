@@ -3,7 +3,7 @@ using ASPNETDockerRestAPI.Models;
 
 namespace ASPNETDockerRestAPI.Parsers
 {
-    public interface IPersonParser
+    public interface IPersonsParser
     {
         PersonDto Parse(PersonModel origin);
         PersonModel Parse(PersonDto origin);

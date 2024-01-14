@@ -1,5 +1,4 @@
 using Asp.Versioning;
-using ASPNETDockerRestAPI.Models;
 using ASPNETDockerRestAPI.Business;
 using Microsoft.AspNetCore.Mvc;
 using ASPNETDockerRestAPI.Dtos;
