@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace ASPNETDockerRestAPI.Models
 {
@@ -11,5 +12,8 @@ namespace ASPNETDockerRestAPI.Models
         public MySqlContext(DbContextOptions<MySqlContext> options) : base(options)
         {
         }
+
+        public DbSet<PersonModel> Persons { get; set; }
+        public DbSet<BookModel> Books { get; set; }
     }
 }

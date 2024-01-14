@@ -9,6 +9,7 @@ using Serilog;
 using ASPNETDockerRestAPI.Repository.Generic;
 using ASPNETDockerRestAPI.Parsers;
 using ASPNETDockerRestAPI.Parsers.Implementations;
+using System.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,14 @@ if (builder.Environment.IsDevelopment())
 {
     MigrateDatabase(connection);
 }
+
+// Configure content negotiation
+builder.Services.AddMvc(options =>
+{
+    options.RespectBrowserAcceptHeader = true;
+    options.FormatterMappings.SetMediaTypeMappingForFormat("xml", "application/xml");
+    options.FormatterMappings.SetMediaTypeMappingForFormat("json", "application/json");
+}).AddXmlSerializerFormatters();
 
 builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
 builder.Services.AddScoped<IBookBusiness, BookBusinessImplementation>();
