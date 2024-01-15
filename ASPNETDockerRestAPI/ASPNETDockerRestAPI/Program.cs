@@ -11,10 +11,21 @@ using ASPNETDockerRestAPI.Parsers;
 using ASPNETDockerRestAPI.Parsers.Implementations;
 using ASPNETDockerRestAPI.Hypermedia.Filters;
 using ASPNETDockerRestAPI.Hypermedia.Enricher;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Rewrite;
+
+var appName = "RESTFUL API with ASP.NET Core 8";
+var appVersion = "v1";
+var appDescription = $"RESTFUL API with ASP.NET Core 8 - {appVersion}";
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddRouting(options =>
+{
+    options.LowercaseUrls = true;
+});
 
 builder.Services.AddControllers();
 builder.Services.AddApiVersioning();
@@ -51,11 +62,38 @@ builder.Services.AddScoped<IPersonParser, PersonParserImplementation>();
 builder.Services.AddScoped<IBookParser, BookParserImplementation>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositoryImplementation<>));
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc(appVersion, new OpenApiInfo
+    {
+        Title = appName,
+        Version = appVersion,
+        Description = appDescription,
+        Contact = new OpenApiContact
+        {
+            Name = "Vinicius Rech",
+            Url = new Uri("https://github.com/vinitrech")
+        }
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{appName} - {appVersion}");
+});
+
+var option = new RewriteOptions();
+option.AddRedirect("^$", "swagger");
+
+app.UseRewriter(option);
 
 app.UseAuthorization();
 

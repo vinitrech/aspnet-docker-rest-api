@@ -15,6 +15,9 @@ namespace ASPNETDockerRestAPI.Controllers
         ) : ControllerBase
     {
         [HttpGet]
+        [ProducesResponseType(200, Type = typeof(List<BookDto>))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         [TypeFilter(typeof(HypermediaFilter))]
         public IActionResult GetAll()
         {
@@ -22,6 +25,9 @@ namespace ASPNETDockerRestAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(200, Type = typeof(BookDto))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         [TypeFilter(typeof(HypermediaFilter))]
         public IActionResult GetById(long id)
         {
@@ -36,6 +42,9 @@ namespace ASPNETDockerRestAPI.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(200, Type = typeof(BookDto))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         [TypeFilter(typeof(HypermediaFilter))]
         public IActionResult Post([FromBody] BookDto book)
         {
@@ -48,6 +57,9 @@ namespace ASPNETDockerRestAPI.Controllers
         }
 
         [HttpPut]
+        [ProducesResponseType(200, Type = typeof(BookDto))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         [TypeFilter(typeof(HypermediaFilter))]
         public IActionResult Put([FromBody] BookDto book)
         {
@@ -60,6 +72,9 @@ namespace ASPNETDockerRestAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         public IActionResult Delete(long id)
         {
             var book = bookBusiness.FindById(id);
