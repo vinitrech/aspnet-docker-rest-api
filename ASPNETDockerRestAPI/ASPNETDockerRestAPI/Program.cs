@@ -27,6 +27,17 @@ builder.Services.AddRouting(options =>
     options.LowercaseUrls = true;
 });
 
+// Configure CORS
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddApiVersioning();
 
@@ -83,6 +94,9 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
+
+// app.UseCors() MUST be placed after UseHttpsRedirection
+app.UseCors();
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>
