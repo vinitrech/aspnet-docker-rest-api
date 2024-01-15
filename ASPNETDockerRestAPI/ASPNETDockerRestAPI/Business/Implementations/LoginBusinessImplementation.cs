@@ -45,7 +45,7 @@ namespace ASPNETDockerRestAPI.Business.Implementations
             var accessToken = tokenDto.AccessToken;
             var refreshToken = tokenDto.RefreshToken;
             var principal = tokenService.GetPrincipalFromExpiredToken(accessToken);
-            var username = principal.Identity.Name;
+            var username = principal.Identity!.Name;
             var userModel = userRepository.ValidateCredentials(username);
             var createDate = DateTime.Now;
             var expirationDate = createDate.AddMinutes(tokenConfiguration.Minutes);

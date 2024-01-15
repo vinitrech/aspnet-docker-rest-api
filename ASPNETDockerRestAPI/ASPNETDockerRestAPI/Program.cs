@@ -62,15 +62,12 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddAuthorization(auth =>
-{
-    auth.AddPolicy("Bearer",
-        new AuthorizationPolicyBuilder()
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("Bearer", new AuthorizationPolicyBuilder()
         .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
         .RequireAuthenticatedUser()
         .Build()
-    );
-});
+);
 
 // Configure CORS
 builder.Services.AddCors(options =>

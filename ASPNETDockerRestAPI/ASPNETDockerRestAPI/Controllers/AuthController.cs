@@ -54,7 +54,7 @@ namespace ASPNETDockerRestAPI.Controllers
         [Route("revoke")]
         public IActionResult Revoke()
         {
-            var username = User.Identity.Name;
+            var username = User.Identity!.Name;
             var result = loginBusiness.RevokeToken(username);
 
             if (!result)
