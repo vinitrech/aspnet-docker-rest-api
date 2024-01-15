@@ -2,6 +2,7 @@
 using ASPNETDockerRestAPI.Models;
 using ASPNETDockerRestAPI.Repository.User;
 using Serilog;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace ASPNETDockerRestAPI.Repository.Implementations
@@ -10,9 +11,29 @@ namespace ASPNETDockerRestAPI.Repository.Implementations
     {
         public UserModel ValidateCredentials(UserDto userDto)
         {
-            var encryptedPassword = ComputeHash(userDto.Password, new SHA256CryptoServiceProvider());
+            var encryptedPassword = ComputeHash(userDto.Password, SHA256.Create());
 
-            return dbContext.Users.FirstOrDefault(u => u.UserName.Equals(userDto.UserName) && u.Password.Equals(encryptedPassword));
+            return dbContext.Users.SingleOrDefault(u => u.UserName.Equals(userDto.UserName) && u.Password.Equals(encryptedPassword));
+        }
+
+        public UserModel ValidateCredentials(string username)
+        {
+            return dbContext.Users.SingleOrDefault(u => u.UserName.Equals(username));
+        }
+
+        public bool RevokeToken(string username)
+        {
+            var user = dbContext.Users.SingleOrDefault(u => u.UserName.Equals(username));
+
+            if (user is null)
+            {
+                return false;
+            }
+
+            user.RefreshToken = null;
+            dbContext.SaveChanges();
+
+            return true;
         }
 
         public UserModel RefreshUserInfo(UserModel userModel)
@@ -38,12 +59,18 @@ namespace ASPNETDockerRestAPI.Repository.Implementations
             }
         }
 
-        private static string ComputeHash(string password, SHA256CryptoServiceProvider sHA256CryptoServiceProvider)
+        private static string ComputeHash(string password, HashAlgorithm hashAlgorithm)
         {
             var inputBytes = Encoding.UTF8.GetBytes(password);
-            var hashedBytes = sHA256CryptoServiceProvider.ComputeHash(inputBytes);
+            var hashedBytes = hashAlgorithm.ComputeHash(inputBytes);
+            var stringBuilder = new StringBuilder();
 
-            return BitConverter.ToString(hashedBytes);
+            foreach (var item in hashedBytes)
+            {
+                stringBuilder.Append(item.ToString("x2"));
+            }
+
+            return stringBuilder.ToString();
         }
     }
 }

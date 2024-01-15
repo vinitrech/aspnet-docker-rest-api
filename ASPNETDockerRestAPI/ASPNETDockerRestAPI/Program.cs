@@ -38,10 +38,9 @@ builder.Services.AddRouting(options =>
 
 // Configure Token Configuration
 var tokenConfiguration = new TokenConfiguration();
-var rawTokenConfigurations = new ConfigureFromConfigurationOptions<TokenConfiguration>(builder.Configuration["TokenConfigurations"]);
+var rawTokenConfigurations = new ConfigureFromConfigurationOptions<TokenConfiguration>(builder.Configuration.GetSection("TokenConfigurations"));
 
 rawTokenConfigurations.Configure(tokenConfiguration);
-
 builder.Services.AddSingleton(tokenConfiguration);
 
 // Configure Authentication and Authorization

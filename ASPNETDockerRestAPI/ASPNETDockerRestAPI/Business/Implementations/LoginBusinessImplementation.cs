@@ -39,5 +39,32 @@ namespace ASPNETDockerRestAPI.Business.Implementations
 
             return new(true, createDate.ToString(DATE_FORMAT), expirationDate.ToString(DATE_FORMAT), accessToken, refreshToken);
         }
+
+        public TokenDto ValidateCredentials(TokenDto tokenDto)
+        {
+            var accessToken = tokenDto.AccessToken;
+            var refreshToken = tokenDto.RefreshToken;
+            var principal = tokenService.GetPrincipalFromExpiredToken(accessToken);
+            var username = principal.Identity.Name;
+            var userModel = userRepository.ValidateCredentials(username);
+            var createDate = DateTime.Now;
+            var expirationDate = createDate.AddMinutes(tokenConfiguration.Minutes);
+
+            if (userModel is null || !userModel.RefreshToken.Equals(refreshToken) || userModel.RefreshTokenExpiryTime <= DateTime.Now)
+            {
+                return null;
+            }
+
+            accessToken = tokenService.GenerateAccessToken(principal.Claims);
+            refreshToken = tokenService.GenerateRefreshToken();
+            userRepository.RefreshUserInfo(userModel);
+
+            return new(true, createDate.ToString(DATE_FORMAT), expirationDate.ToString(DATE_FORMAT), accessToken, refreshToken);
+        }
+
+        public bool RevokeToken(string username)
+        {
+            return userRepository.RevokeToken(username);
+        }
     }
 }
