@@ -8,6 +8,7 @@ namespace ASPNETDockerRestAPI.Business
         PersonDto? FindById(long id);
         List<PersonDto> FindAll();
         PersonDto Update(PersonDto personDTO);
+        PersonDto Disable(long id);
         void Delete(long id);
     }
 }

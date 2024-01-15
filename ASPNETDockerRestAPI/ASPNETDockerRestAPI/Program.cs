@@ -2,11 +2,9 @@ using ASPNETDockerRestAPI.Models;
 using ASPNETDockerRestAPI.Business;
 using ASPNETDockerRestAPI.Business.Implementations;
 using Microsoft.EntityFrameworkCore;
-using ASPNETDockerRestAPI.Repository.Implementations;
 using MySqlConnector;
 using EvolveDb;
 using Serilog;
-using ASPNETDockerRestAPI.Repository.Generic;
 using ASPNETDockerRestAPI.Parsers;
 using ASPNETDockerRestAPI.Parsers.Implementations;
 using ASPNETDockerRestAPI.Hypermedia.Filters;
@@ -15,13 +13,15 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Rewrite;
 using ASPNETDockerRestAPI.Services;
 using ASPNETDockerRestAPI.Services.Implementations;
-using ASPNETDockerRestAPI.Repository.User;
 using ASPNETDockerRestAPI.Configurations;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using ASPNETDockerRestAPI.Repository.Implementations;
+using ASPNETDockerRestAPI.Repository;
+using ASPNETDockerRestAPI.Repository.Generic.Implementations;
 
 var appName = "RESTFUL API with ASP.NET Core 8";
 var appVersion = "v1";
@@ -122,7 +122,8 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IPersonParser, PersonParserImplementation>();
 builder.Services.AddScoped<IBookParser, BookParserImplementation>();
 
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepositoryImplementation>();
+builder.Services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositoryImplementation<>));
 
 // Configure swagger

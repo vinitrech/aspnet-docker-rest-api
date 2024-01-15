@@ -1,6 +1,6 @@
 ﻿using ASPNETDockerRestAPI.Models.Base;
 
-namespace ASPNETDockerRestAPI.Repository.Generic
+namespace ASPNETDockerRestAPI.Repository
 {
     public interface IGenericRepository<T> where T : BaseModel
     {

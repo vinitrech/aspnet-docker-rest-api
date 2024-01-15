@@ -1,5 +1,6 @@
 ﻿using ASPNETDockerRestAPI.Hypermedia;
 using ASPNETDockerRestAPI.Hypermedia.Abstract;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace ASPNETDockerRestAPI.Dtos
@@ -25,7 +26,11 @@ namespace ASPNETDockerRestAPI.Dtos
         [JsonIgnore]
         public string Gender { get; set; }
 
+        [JsonPropertyName("enabled")]
         [JsonPropertyOrder(5)]
+        public bool Enabled { get; set; }
+
+        [JsonPropertyOrder(6)]
         public List<HypermediaLink> Links { get; set; } = [];
     }
 }

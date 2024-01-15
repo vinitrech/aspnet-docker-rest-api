@@ -73,6 +73,16 @@ namespace ASPNETDockerRestAPI.Controllers
             return Ok(personBusiness.Update(person));
         }
 
+        [HttpPatch("{id}")]
+        [ProducesResponseType(200, Type = typeof(PersonDto))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [TypeFilter(typeof(HypermediaFilter))]
+        public IActionResult Patch(long id)
+        {
+            return Ok(personBusiness.Disable(id));
+        }
+
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]

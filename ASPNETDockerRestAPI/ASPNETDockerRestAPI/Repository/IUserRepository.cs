@@ -1,7 +1,7 @@
 ﻿using ASPNETDockerRestAPI.Dtos;
 using ASPNETDockerRestAPI.Models;
 
-namespace ASPNETDockerRestAPI.Repository.User
+namespace ASPNETDockerRestAPI.Repository
 {
     public interface IUserRepository
     {

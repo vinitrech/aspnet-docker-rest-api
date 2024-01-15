@@ -1,13 +1,12 @@
 ﻿using ASPNETDockerRestAPI.Dtos;
 using ASPNETDockerRestAPI.Models;
-using ASPNETDockerRestAPI.Repository.User;
 using Serilog;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace ASPNETDockerRestAPI.Repository.Implementations
 {
-    public class UserRepository(MySqlContext dbContext) : IUserRepository
+    public class UserRepositoryImplementation(MySqlContext dbContext) : IUserRepository
     {
         public UserModel ValidateCredentials(UserDto userDto)
         {

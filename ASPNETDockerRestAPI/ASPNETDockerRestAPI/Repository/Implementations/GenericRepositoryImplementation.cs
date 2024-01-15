@@ -1,10 +1,9 @@
 ﻿using ASPNETDockerRestAPI.Models;
 using ASPNETDockerRestAPI.Models.Base;
-using ASPNETDockerRestAPI.Repository.Generic;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
-namespace ASPNETDockerRestAPI.Repository.Implementations
+namespace ASPNETDockerRestAPI.Repository.Generic.Implementations
 {
     public class GenericRepositoryImplementation<T>(MySqlContext dbContext) : IGenericRepository<T> where T : BaseModel
     {

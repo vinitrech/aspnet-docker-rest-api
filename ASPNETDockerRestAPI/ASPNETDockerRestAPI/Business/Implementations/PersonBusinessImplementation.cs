@@ -1,11 +1,10 @@
 ﻿using ASPNETDockerRestAPI.Dtos;
-using ASPNETDockerRestAPI.Models;
 using ASPNETDockerRestAPI.Parsers;
-using ASPNETDockerRestAPI.Repository.Generic;
+using ASPNETDockerRestAPI.Repository;
 
 namespace ASPNETDockerRestAPI.Business.Implementations
 {
-    public class PersonBusinessImplementation(IGenericRepository<PersonModel> personRepository, IPersonParser personParser) : IPersonBusiness
+    public class PersonBusinessImplementation(IPersonRepository personRepository, IPersonParser personParser) : IPersonBusiness
     {
         public PersonDto Create(PersonDto personDto)
         {
@@ -37,6 +36,14 @@ namespace ASPNETDockerRestAPI.Business.Implementations
             return personParser.Parse(updatedPerson);
         }
 
+        public PersonDto Disable(long id)
+        {
+            var personModel = personRepository.Disable(id);
+
+            return personParser.Parse(personModel);
+        }
+
         public void Delete(long id) => personRepository.Delete(id);
+
     }
 }

@@ -12,13 +12,13 @@ namespace ASPNETDockerRestAPI.Services.Implementations
         public string GenerateAccessToken(IEnumerable<Claim> claims)
         {
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfiguration.Secret));
-            var signInCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+            var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
             var tokenOptions = new JwtSecurityToken(
                 issuer: tokenConfiguration.Issuer,
                 audience: tokenConfiguration.Audience,
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(tokenConfiguration.Minutes),
-                signingCredentials: signInCredentials
+                signingCredentials: signingCredentials
             );
 
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);

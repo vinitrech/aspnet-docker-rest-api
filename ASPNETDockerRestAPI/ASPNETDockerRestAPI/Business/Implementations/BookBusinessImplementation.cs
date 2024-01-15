@@ -1,7 +1,7 @@
 ﻿using ASPNETDockerRestAPI.Dtos;
 using ASPNETDockerRestAPI.Models;
 using ASPNETDockerRestAPI.Parsers;
-using ASPNETDockerRestAPI.Repository.Generic;
+using ASPNETDockerRestAPI.Repository;
 
 namespace ASPNETDockerRestAPI.Business.Implementations
 {

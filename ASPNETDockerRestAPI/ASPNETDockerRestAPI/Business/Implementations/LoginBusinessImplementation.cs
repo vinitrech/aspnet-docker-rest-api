@@ -1,6 +1,6 @@
 ﻿using ASPNETDockerRestAPI.Configurations;
 using ASPNETDockerRestAPI.Dtos;
-using ASPNETDockerRestAPI.Repository.User;
+using ASPNETDockerRestAPI.Repository;
 using ASPNETDockerRestAPI.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
