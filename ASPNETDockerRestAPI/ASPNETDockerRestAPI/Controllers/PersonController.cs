@@ -2,6 +2,7 @@ using Asp.Versioning;
 using ASPNETDockerRestAPI.Business;
 using Microsoft.AspNetCore.Mvc;
 using ASPNETDockerRestAPI.Dtos;
+using ASPNETDockerRestAPI.Hypermedia.Filters;
 
 namespace ASPNETDockerRestAPI.Controllers
 {
@@ -14,12 +15,14 @@ namespace ASPNETDockerRestAPI.Controllers
         ) : ControllerBase
     {
         [HttpGet]
+        [TypeFilter(typeof(HypermediaFilter))]
         public IActionResult GetAll()
         {
             return Ok(personBusiness.FindAll());
         }
 
         [HttpGet("{id}")]
+        [TypeFilter(typeof(HypermediaFilter))]
         public IActionResult GetById(long id)
         {
             var person = personBusiness.FindById(id);
@@ -33,6 +36,7 @@ namespace ASPNETDockerRestAPI.Controllers
         }
 
         [HttpPost]
+        [TypeFilter(typeof(HypermediaFilter))]
         public IActionResult Post([FromBody] PersonDto person)
         {
             if (person is null)
@@ -44,6 +48,7 @@ namespace ASPNETDockerRestAPI.Controllers
         }
 
         [HttpPut]
+        [TypeFilter(typeof(HypermediaFilter))]
         public IActionResult Put([FromBody] PersonDto person)
         {
             if (person is null)

@@ -1,8 +1,10 @@
-﻿using System.Text.Json.Serialization;
+﻿using ASPNETDockerRestAPI.Hypermedia;
+using ASPNETDockerRestAPI.Hypermedia.Abstract;
+using System.Text.Json.Serialization;
 
 namespace ASPNETDockerRestAPI.Dtos
 {
-    public class PersonDto
+    public class PersonDto : ISupportsHypermedia
     {
         [JsonPropertyName("id")]
         [JsonPropertyOrder(1)]
@@ -22,5 +24,8 @@ namespace ASPNETDockerRestAPI.Dtos
 
         [JsonIgnore]
         public string Gender { get; set; }
+
+        [JsonPropertyOrder(5)]
+        public List<HypermediaLink> Links { get; set; } = [];
     }
 }

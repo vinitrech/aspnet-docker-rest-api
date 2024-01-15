@@ -9,7 +9,8 @@ using Serilog;
 using ASPNETDockerRestAPI.Repository.Generic;
 using ASPNETDockerRestAPI.Parsers;
 using ASPNETDockerRestAPI.Parsers.Implementations;
-using System.Net.Http.Headers;
+using ASPNETDockerRestAPI.Hypermedia.Filters;
+using ASPNETDockerRestAPI.Hypermedia.Enricher;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +39,12 @@ builder.Services.AddMvc(options =>
     options.FormatterMappings.SetMediaTypeMappingForFormat("json", "application/json");
 }).AddXmlSerializerFormatters();
 
+var filterOptions = new HypermediaFilterOptions();
+
+filterOptions.ContentResponseEnrichers.Add(new PersonEnricher());
+filterOptions.ContentResponseEnrichers.Add(new BookEnricher());
+
+builder.Services.AddSingleton(filterOptions);
 builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
 builder.Services.AddScoped<IBookBusiness, BookBusinessImplementation>();
 builder.Services.AddScoped<IPersonParser, PersonParserImplementation>();
@@ -53,6 +60,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapControllerRoute("DefaultApi", "{controller=values}/{id?}");
 
 app.Run();
 
