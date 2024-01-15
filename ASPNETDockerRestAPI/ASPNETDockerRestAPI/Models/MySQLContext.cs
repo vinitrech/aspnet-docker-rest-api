@@ -15,5 +15,6 @@ namespace ASPNETDockerRestAPI.Models
 
         public DbSet<PersonModel> Persons { get; set; }
         public DbSet<BookModel> Books { get; set; }
+        public DbSet<UserModel> Users { get; set; }
     }
 }

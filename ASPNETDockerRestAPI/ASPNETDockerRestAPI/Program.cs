@@ -13,6 +13,15 @@ using ASPNETDockerRestAPI.Hypermedia.Filters;
 using ASPNETDockerRestAPI.Hypermedia.Enricher;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Rewrite;
+using ASPNETDockerRestAPI.Services;
+using ASPNETDockerRestAPI.Services.Implementations;
+using ASPNETDockerRestAPI.Repository.User;
+using ASPNETDockerRestAPI.Configurations;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 var appName = "RESTFUL API with ASP.NET Core 8";
 var appVersion = "v1";
@@ -27,6 +36,43 @@ builder.Services.AddRouting(options =>
     options.LowercaseUrls = true;
 });
 
+// Configure Token Configuration
+var tokenConfiguration = new TokenConfiguration();
+var rawTokenConfigurations = new ConfigureFromConfigurationOptions<TokenConfiguration>(builder.Configuration["TokenConfigurations"]);
+
+rawTokenConfigurations.Configure(tokenConfiguration);
+
+builder.Services.AddSingleton(tokenConfiguration);
+
+// Configure Authentication and Authorization
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = tokenConfiguration.Issuer,
+        ValidAudience = tokenConfiguration.Audience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfiguration.Secret))
+    };
+});
+
+builder.Services.AddAuthorization(auth =>
+{
+    auth.AddPolicy("Bearer",
+        new AuthorizationPolicyBuilder()
+        .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+        .RequireAuthenticatedUser()
+        .Build()
+    );
+});
+
 // Configure CORS
 builder.Services.AddCors(options =>
 {
@@ -38,9 +84,11 @@ builder.Services.AddCors(options =>
     });
 });
 
+// Configure controllers + versioning
 builder.Services.AddControllers();
 builder.Services.AddApiVersioning();
 
+// Configure database
 var connection = builder.Configuration["MySQLConnection:MySQLConnectionString"];
 
 builder.Services.AddDbContext<MySqlContext>(options => options.UseMySql(
@@ -67,12 +115,21 @@ filterOptions.ContentResponseEnrichers.Add(new PersonEnricher());
 filterOptions.ContentResponseEnrichers.Add(new BookEnricher());
 
 builder.Services.AddSingleton(filterOptions);
+
+// Configure DI
 builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
 builder.Services.AddScoped<IBookBusiness, BookBusinessImplementation>();
+builder.Services.AddScoped<ILoginBusiness, LoginBusinessImplementation>();
+
+builder.Services.AddScoped<ITokenService, TokenService>();
+
 builder.Services.AddScoped<IPersonParser, PersonParserImplementation>();
 builder.Services.AddScoped<IBookParser, BookParserImplementation>();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositoryImplementation<>));
 
+// Configure swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -92,7 +149,6 @@ builder.Services.AddSwaggerGen(c =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
 app.UseHttpsRedirection();
 
 // app.UseCors() MUST be placed after UseHttpsRedirection

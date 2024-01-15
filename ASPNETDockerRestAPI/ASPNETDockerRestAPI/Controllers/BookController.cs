@@ -3,10 +3,12 @@ using ASPNETDockerRestAPI.Business;
 using Microsoft.AspNetCore.Mvc;
 using ASPNETDockerRestAPI.Dtos;
 using ASPNETDockerRestAPI.Hypermedia.Filters;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASPNETDockerRestAPI.Controllers
 {
     [ApiController]
+    [Authorize("Bearer")]
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/books")]
     public class BookController(
