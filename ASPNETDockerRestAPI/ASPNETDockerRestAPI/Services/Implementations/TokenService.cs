@@ -11,7 +11,7 @@ namespace ASPNETDockerRestAPI.Services.Implementations
     {
         public string GenerateAccessToken(IEnumerable<Claim> claims)
         {
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfiguration.Secret));
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfiguration.Secret!));
             var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
             var tokenOptions = new JwtSecurityToken(
                 issuer: tokenConfiguration.Issuer,
@@ -41,7 +41,7 @@ namespace ASPNETDockerRestAPI.Services.Implementations
                 ValidateAudience = false,
                 ValidateIssuer = false,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfiguration.Secret)),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfiguration.Secret!)),
                 ValidateLifetime = false
             };
 
