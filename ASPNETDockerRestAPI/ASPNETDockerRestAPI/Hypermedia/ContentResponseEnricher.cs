@@ -1,4 +1,5 @@
-﻿using ASPNETDockerRestAPI.Hypermedia.Abstract;
+﻿using ASPNETDockerRestAPI.Dtos;
+using ASPNETDockerRestAPI.Hypermedia.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -10,7 +11,7 @@ namespace ASPNETDockerRestAPI.Hypermedia
     {
         public bool CanEnrich(Type contentType)
         {
-            return contentType == typeof(T) || contentType == typeof(List<T>);
+            return contentType == typeof(T) || contentType == typeof(List<T>) || contentType == typeof(PagedSearchDto<T>);
         }
 
         protected abstract Task EnrichModel(T content, IUrlHelper urlHelper);
@@ -40,6 +41,10 @@ namespace ASPNETDockerRestAPI.Hypermedia
                     var bag = new ConcurrentBag<T>(modelList); // ConcurrentBag will store all items in a thread-safe manner, so that the items can be processed simultaneously by different threads.
 
                     Parallel.ForEach(bag, (element) => EnrichModel(element, urlHelper)); // Parallel.ForEach will discover and use all available threads. Each thread will process one iteration.
+                }
+                else if (okObjectResult.Value is PagedSearchDto<T> pagedSearch)
+                {
+                    Parallel.ForEach(pagedSearch.Items.ToList(), (element) => EnrichModel(element, urlHelper));
                 }
             }
 

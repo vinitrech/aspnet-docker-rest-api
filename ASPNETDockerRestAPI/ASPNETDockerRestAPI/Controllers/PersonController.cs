@@ -16,14 +16,14 @@ namespace ASPNETDockerRestAPI.Controllers
         IPersonBusiness personBusiness
         ) : ControllerBase
     {
-        [HttpGet]
+        [HttpGet("{sortDirection}/{pageSize}/{page}")]
         [ProducesResponseType(200, Type = typeof(List<PersonDto>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [TypeFilter(typeof(HypermediaFilter))]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromQuery] string name, string sortDirection, int pageSize, int page)
         {
-            return Ok(personBusiness.FindAll());
+            return Ok(personBusiness.FindAllPaged(name, sortDirection, pageSize, page));
         }
 
         [HttpGet("{id}")]
@@ -41,6 +41,23 @@ namespace ASPNETDockerRestAPI.Controllers
             }
 
             return Ok(person);
+        }
+
+        [HttpGet("findPersonsByName")]
+        [ProducesResponseType(200, Type = typeof(PersonDto))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [TypeFilter(typeof(HypermediaFilter))]
+        public IActionResult GetByNames([FromQuery] string firstName, [FromQuery] string lastName)
+        {
+            var persons = personBusiness.FindByName(firstName, lastName);
+
+            if (persons.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(persons);
         }
 
         [HttpPost]

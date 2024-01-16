@@ -1,5 +1,6 @@
 ﻿using ASPNETDockerRestAPI.Models;
 using ASPNETDockerRestAPI.Repository.Generic.Implementations;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 namespace ASPNETDockerRestAPI.Repository.Implementations
@@ -29,6 +30,24 @@ namespace ASPNETDockerRestAPI.Repository.Implementations
             }
 
             return person;
+        }
+
+        public List<PersonModel> FindByName(string firstName, string lastName)
+        {
+            if (!string.IsNullOrWhiteSpace(firstName) && !string.IsNullOrWhiteSpace(lastName))
+            {
+                return [.. dbContext.Persons.Where(p => p.FirstName.Contains(firstName) && p.LastName.Contains(lastName))];
+            }
+            else if (!string.IsNullOrWhiteSpace(firstName))
+            {
+                return [.. dbContext.Persons.Where(p => p.FirstName.Contains(firstName))];
+            }
+            else if (!string.IsNullOrWhiteSpace(lastName))
+            {
+                return [.. dbContext.Persons.Where(p => p.LastName.Contains(lastName))];
+            }
+
+            return [];
         }
     }
 }

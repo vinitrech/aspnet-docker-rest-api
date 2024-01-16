@@ -9,5 +9,7 @@ namespace ASPNETDockerRestAPI.Repository
         List<T> FindAll();
         T Update(T entity);
         void Delete(long id);
+        List<T> FindAllPaged(string query);
+        int GetCount(string query);
     }
 }

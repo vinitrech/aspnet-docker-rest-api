@@ -14,11 +14,33 @@ namespace ASPNETDockerRestAPI.Business.Implementations
             return personParser.Parse(createdPerson);
         }
 
-        public List<PersonDto> FindAll()
+        public PagedSearchDto<PersonDto> FindAllPaged(string name, string sortDirection, int pageSize, int currentPage)
         {
-            var books = personRepository.FindAll();
+            var sort = (!string.IsNullOrWhiteSpace(sortDirection) && !sortDirection.Equals("desc")) ? "asc" : "desc";
+            var size = (pageSize < 1) ? 10 : pageSize;
+            var query = @"select * from person p where 1 = 1";
+            var countQuery = @"select count(*) from person p where 1 = 1";
+            var offset = currentPage > 0 ? (currentPage - 1) * size : 0;
 
-            return books.Select(personParser.Parse).ToList();
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                query += $" and p.first_name like '%{name}%'";
+                countQuery += $" and p.first_name like '%{name}%'";
+            }
+
+            query += $" order by p.first_name {sort} limit {size} offset {offset}";
+
+            var persons = personRepository.FindAllPaged(query).ToList();
+            var totalResults = personRepository.GetCount(countQuery);
+
+            return new()
+            {
+                CurrentPage = currentPage,
+                Items = personParser.Parse(persons).ToList(),
+                PageSize = size,
+                SortDirections = sort,
+                TotalResults = totalResults
+            };
         }
 
         public PersonDto FindById(long id)
@@ -26,6 +48,13 @@ namespace ASPNETDockerRestAPI.Business.Implementations
             var book = personRepository.FindById(id);
 
             return personParser.Parse(book);
+        }
+
+        public List<PersonDto> FindByName(string firstName, string lastName)
+        {
+            var personDtos = personRepository.FindByName(firstName, lastName);
+
+            return personDtos.Select(personParser.Parse).ToList();
         }
 
         public PersonDto Update(PersonDto personDto)
@@ -44,6 +73,5 @@ namespace ASPNETDockerRestAPI.Business.Implementations
         }
 
         public void Delete(long id) => personRepository.Delete(id);
-
     }
 }

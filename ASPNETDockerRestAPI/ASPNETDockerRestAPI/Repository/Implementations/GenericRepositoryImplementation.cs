@@ -62,5 +62,22 @@ namespace ASPNETDockerRestAPI.Repository.Generic.Implementations
                 throw;
             }
         }
+
+        public List<T> FindAllPaged(string query)
+        {
+            return [.. _dataset.FromSqlRaw(query)];
+        }
+
+        public int GetCount(string query)
+        {
+            using var connection = dbContext.Database.GetDbConnection();
+            using var command = connection.CreateCommand();
+
+            connection.Open();
+            command.CommandText = query;
+            var result = command.ExecuteScalar()?.ToString();
+
+            return int.Parse(result);
+        }
     }
 }
