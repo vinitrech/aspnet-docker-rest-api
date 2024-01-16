@@ -58,7 +58,7 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = tokenConfiguration.Issuer,
         ValidAudience = tokenConfiguration.Audience,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfiguration.Secret))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfiguration.Secret!))
     };
 });
 
@@ -138,7 +138,7 @@ builder.Services.AddSwaggerGen(c =>
         Contact = new OpenApiContact
         {
             Name = "Vinicius Rech",
-            Url = new Uri("https://github.com/vinitrech")
+            Url = new Uri(builder.Configuration["AuthorGithub"]!)
         }
     });
 });

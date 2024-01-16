@@ -5,7 +5,7 @@ namespace ASPNETDockerRestAPI.Parsers.Implementations
 {
     public class BookParserImplementation : IBookParser
     {
-        public BookDto Parse(BookModel origin)
+        public BookDto? Parse(BookModel? origin)
         {
             if (origin is null)
             {
@@ -22,7 +22,7 @@ namespace ASPNETDockerRestAPI.Parsers.Implementations
             };
         }
 
-        public BookModel Parse(BookDto origin)
+        public BookModel? Parse(BookDto? origin)
         {
             if (origin is null)
             {
@@ -46,7 +46,7 @@ namespace ASPNETDockerRestAPI.Parsers.Implementations
                 return [];
             }
 
-            return origin.Select(Parse);
+            return origin.Where(o => o is not null).Select(Parse)!;
         }
 
         public IEnumerable<BookModel> Parse(IEnumerable<BookDto> origin)
@@ -56,7 +56,7 @@ namespace ASPNETDockerRestAPI.Parsers.Implementations
                 return [];
             }
 
-            return origin.Select(Parse);
+            return origin.Where(o => o is not null).Select(Parse)!;
         }
     }
 }

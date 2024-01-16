@@ -12,14 +12,14 @@ namespace ASPNETDockerRestAPI.Business.Implementations
             var bookModel = bookParser.Parse(bookDto);
             var createdBook = bookRepository.Create(bookModel);
 
-            return bookParser.Parse(createdBook);
+            return bookParser.Parse(createdBook)!;
         }
 
         public List<BookDto> FindAll()
         {
             var books = bookRepository.FindAll();
 
-            return books.Select(bookParser.Parse).ToList();
+            return books.Where(b => b is not null).Select(bookParser.Parse).ToList()!;
         }
 
         public BookDto? FindById(long id)
@@ -39,7 +39,7 @@ namespace ASPNETDockerRestAPI.Business.Implementations
             var bookModel = bookParser.Parse(bookDto);
             var updatedBook = bookRepository.Update(bookModel);
 
-            return bookParser.Parse(updatedBook);
+            return bookParser.Parse(updatedBook)!;
         }
 
         public void Delete(long id) => bookRepository.Delete(id);

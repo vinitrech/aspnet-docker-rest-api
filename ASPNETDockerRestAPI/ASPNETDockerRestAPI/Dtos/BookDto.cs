@@ -12,7 +12,7 @@ namespace ASPNETDockerRestAPI.Dtos
 
         [JsonPropertyName("author")]
         [JsonPropertyOrder(3)]
-        public string Author { get; set; }
+        public string? Author { get; set; }
 
         [JsonIgnore]
         public DateTime LaunchDate { get; set; }
@@ -23,7 +23,7 @@ namespace ASPNETDockerRestAPI.Dtos
 
         [JsonPropertyName("title")]
         [JsonPropertyOrder(4)]
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
         [JsonPropertyOrder(5)]
         public List<HypermediaLink> Links { get; set; } = [];

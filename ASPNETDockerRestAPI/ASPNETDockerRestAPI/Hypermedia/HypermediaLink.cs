@@ -4,11 +4,11 @@ namespace ASPNETDockerRestAPI.Hypermedia
 {
     public class HypermediaLink
     {
-        private string _href { get; set; }
-        public string Rel { get; set; }
-        public string Type { get; set; }
-        public string Action { get; set; }
-        public string Href
+        private string? _href { get; set; }
+        public string? Rel { get; set; }
+        public string? Type { get; set; }
+        public string? Action { get; set; }
+        public string? Href
         {
             get
             {

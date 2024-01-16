@@ -9,7 +9,7 @@ namespace ASPNETDockerRestAPI.Hypermedia
 {
     public abstract class ContentResponseEnricher<T>() : IResponseEnricher where T : ISupportsHypermedia
     {
-        public bool CanEnrich(Type contentType)
+        public bool CanEnrich(Type? contentType)
         {
             return contentType == typeof(T) || contentType == typeof(List<T>) || contentType == typeof(PagedSearchDto<T>);
         }
@@ -20,7 +20,7 @@ namespace ASPNETDockerRestAPI.Hypermedia
         {
             if (context.Result is OkObjectResult okObjectResult)
             {
-                return CanEnrich(okObjectResult.Value.GetType());
+                return CanEnrich(okObjectResult.Value?.GetType());
             }
 
             return false;
@@ -44,11 +44,16 @@ namespace ASPNETDockerRestAPI.Hypermedia
                 }
                 else if (okObjectResult.Value is PagedSearchDto<T> pagedSearch)
                 {
-                    Parallel.ForEach(pagedSearch.Items.ToList(), (element) => EnrichModel(element, urlHelper));
+                    var items = pagedSearch.Items?.ToList();
+
+                    if (items?.Count > 0)
+                    {
+                        _ = Parallel.ForEach(items, (element) => EnrichModel(element, urlHelper));
+                    }
                 }
             }
 
-            await Task.FromResult<object>(null);
+            await Task.FromResult<object?>(null);
         }
     }
 }

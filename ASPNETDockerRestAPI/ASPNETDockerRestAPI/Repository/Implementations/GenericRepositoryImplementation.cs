@@ -9,8 +9,13 @@ namespace ASPNETDockerRestAPI.Repository.Generic.Implementations
     {
         private readonly DbSet<T> _dataset = dbContext.Set<T>();
 
-        public T Create(T entity)
+        public T? Create(T? entity)
         {
+            if (entity is null)
+            {
+                return null;
+            }
+
             try
             {
                 _dataset.Add(entity);
@@ -32,8 +37,13 @@ namespace ASPNETDockerRestAPI.Repository.Generic.Implementations
 
         public T? FindById(long id) => dbContext.Find<T>(id);
 
-        public T Update(T entity)
+        public T? Update(T? entity)
         {
+            if (entity is null)
+            {
+                return null;
+            }
+
             try
             {
                 _dataset.Update(entity);
@@ -77,7 +87,7 @@ namespace ASPNETDockerRestAPI.Repository.Generic.Implementations
             command.CommandText = query;
             var result = command.ExecuteScalar()?.ToString();
 
-            return int.Parse(result);
+            return string.IsNullOrWhiteSpace(result) ? 0 : int.Parse(result);
         }
     }
 }

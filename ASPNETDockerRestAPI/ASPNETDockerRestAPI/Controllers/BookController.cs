@@ -12,7 +12,6 @@ namespace ASPNETDockerRestAPI.Controllers
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/books")]
     public class BookController(
-        ILogger<BookController> logger,
         IBookBusiness bookBusiness
         ) : ControllerBase
     {

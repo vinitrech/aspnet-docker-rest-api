@@ -5,7 +5,7 @@ namespace ASPNETDockerRestAPI.Parsers.Implementations
 {
     public class PersonParserImplementation : IPersonParser
     {
-        public PersonDto Parse(PersonModel origin)
+        public PersonDto? Parse(PersonModel? origin)
         {
             if (origin is null)
             {
@@ -22,7 +22,7 @@ namespace ASPNETDockerRestAPI.Parsers.Implementations
             };
         }
 
-        public PersonModel Parse(PersonDto origin)
+        public PersonModel? Parse(PersonDto origin)
         {
             if (origin is null)
             {
@@ -46,7 +46,7 @@ namespace ASPNETDockerRestAPI.Parsers.Implementations
                 return [];
             }
 
-            return origin.Select(Parse).ToList();
+            return origin.Where(o => o is not null).Select(Parse)!;
         }
 
         public IEnumerable<PersonModel> Parse(IEnumerable<PersonDto> origin)
@@ -56,7 +56,7 @@ namespace ASPNETDockerRestAPI.Parsers.Implementations
                 return [];
             }
 
-            return origin.Select(Parse).ToList();
+            return origin.Where(o => o is not null).Select(Parse)!;
         }
     }
 }

@@ -12,7 +12,6 @@ namespace ASPNETDockerRestAPI.Controllers
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/persons")]
     public class PersonController(
-        ILogger<PersonController> logger,
         IPersonBusiness personBusiness
         ) : ControllerBase
     {

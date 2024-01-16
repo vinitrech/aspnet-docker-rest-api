@@ -12,19 +12,19 @@ namespace ASPNETDockerRestAPI.Dtos
 
         [JsonPropertyName("user_name")]
         [JsonPropertyOrder(2)]
-        public string UserName { get; set; }
+        public string? UserName { get; set; }
 
         [JsonPropertyName("full_name")]
         [JsonPropertyOrder(3)]
-        public string FullName { get; set; }
+        public string? FullName { get; set; }
 
         [JsonPropertyName("password")]
         [JsonPropertyOrder(4)]
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
         [JsonPropertyName("refresh_token")]
         [JsonPropertyOrder(5)]
-        public string RefreshToken { get; set; }
+        public string? RefreshToken { get; set; }
 
         [JsonPropertyName("refresh_token_expiry_time")]
         [JsonPropertyOrder(6)]

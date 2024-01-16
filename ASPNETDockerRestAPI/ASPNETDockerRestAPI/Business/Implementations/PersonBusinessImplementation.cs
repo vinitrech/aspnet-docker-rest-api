@@ -11,7 +11,7 @@ namespace ASPNETDockerRestAPI.Business.Implementations
             var personModel = personParser.Parse(personDto);
             var createdPerson = personRepository.Create(personModel);
 
-            return personParser.Parse(createdPerson);
+            return personParser.Parse(createdPerson)!;
         }
 
         public PagedSearchDto<PersonDto> FindAllPaged(string name, string sortDirection, int pageSize, int currentPage)
@@ -43,21 +43,21 @@ namespace ASPNETDockerRestAPI.Business.Implementations
             };
         }
 
-        public PersonDto FindById(long id)
+        public PersonDto? FindById(long id)
         {
-            var book = personRepository.FindById(id);
+            var person = personRepository.FindById(id);
 
-            return personParser.Parse(book);
+            return personParser.Parse(person);
         }
 
-        public List<PersonDto> FindByName(string firstName, string lastName)
+        public List<PersonDto?> FindByName(string firstName, string lastName)
         {
-            var personDtos = personRepository.FindByName(firstName, lastName);
+            var personModels = personRepository.FindByName(firstName, lastName);
 
-            return personDtos.Select(personParser.Parse).ToList();
+            return personModels.Select(personParser.Parse).Where(p => p is not null).ToList();
         }
 
-        public PersonDto Update(PersonDto personDto)
+        public PersonDto? Update(PersonDto personDto)
         {
             var personModel = personParser.Parse(personDto);
             var updatedPerson = personRepository.Update(personModel);
@@ -65,7 +65,7 @@ namespace ASPNETDockerRestAPI.Business.Implementations
             return personParser.Parse(updatedPerson);
         }
 
-        public PersonDto Disable(long id)
+        public PersonDto? Disable(long id)
         {
             var personModel = personRepository.Disable(id);
 

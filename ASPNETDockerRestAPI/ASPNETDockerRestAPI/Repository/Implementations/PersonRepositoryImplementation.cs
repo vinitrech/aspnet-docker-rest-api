@@ -1,15 +1,16 @@
 ﻿using ASPNETDockerRestAPI.Models;
 using ASPNETDockerRestAPI.Repository.Generic.Implementations;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 namespace ASPNETDockerRestAPI.Repository.Implementations
 {
-    public class PersonRepositoryImplementation(MySqlContext dbContext) : GenericRepositoryImplementation<PersonModel>(dbContext), IPersonRepository
+    public class PersonRepositoryImplementation(MySqlContext mysqlContext) : GenericRepositoryImplementation<PersonModel>(mysqlContext), IPersonRepository
     {
-        public PersonModel Disable(long id)
+        private MySqlContext DbContext { get; set; } = mysqlContext; // temporary fix, primary constructor messes up base parameters
+
+        public PersonModel? Disable(long id)
         {
-            var person = dbContext.Persons.SingleOrDefault(u => u.Id == id);
+            var person = DbContext.Persons.SingleOrDefault(u => u.Id == id);
 
             if (person is null)
             {
@@ -20,8 +21,8 @@ namespace ASPNETDockerRestAPI.Repository.Implementations
 
             try
             {
-                dbContext.Update(person);
-                dbContext.SaveChanges();
+                DbContext.Update(person);
+                DbContext.SaveChanges();
             }
             catch (Exception)
             {
@@ -36,15 +37,15 @@ namespace ASPNETDockerRestAPI.Repository.Implementations
         {
             if (!string.IsNullOrWhiteSpace(firstName) && !string.IsNullOrWhiteSpace(lastName))
             {
-                return [.. dbContext.Persons.Where(p => p.FirstName.Contains(firstName) && p.LastName.Contains(lastName))];
+                return [.. DbContext.Persons.Where(p => !string.IsNullOrWhiteSpace(p.FirstName) && p.FirstName.Contains(firstName) && !string.IsNullOrWhiteSpace(p.LastName) && p.LastName.Contains(lastName))];
             }
             else if (!string.IsNullOrWhiteSpace(firstName))
             {
-                return [.. dbContext.Persons.Where(p => p.FirstName.Contains(firstName))];
+                return [.. DbContext.Persons.Where(p => !string.IsNullOrWhiteSpace(p.FirstName) && p.FirstName.Contains(firstName))];
             }
             else if (!string.IsNullOrWhiteSpace(lastName))
             {
-                return [.. dbContext.Persons.Where(p => p.LastName.Contains(lastName))];
+                return [.. DbContext.Persons.Where(p => !string.IsNullOrWhiteSpace(p.LastName) && p.LastName.Contains(lastName))];
             }
 
             return [];

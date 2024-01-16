@@ -11,7 +11,7 @@ namespace ASPNETDockerRestAPI.Business.Implementations
     {
         private const string DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-        public TokenDto ValidateCredentials(UserDto userDto)
+        public TokenDto? ValidateCredentials(UserDto userDto)
         {
             var userModel = userRepository.ValidateCredentials(userDto);
 
@@ -23,7 +23,7 @@ namespace ASPNETDockerRestAPI.Business.Implementations
             var claims = new List<Claim>
             {
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                new(JwtRegisteredClaimNames.UniqueName, userDto.UserName)
+                new(JwtRegisteredClaimNames.UniqueName, userDto.UserName!)
             };
 
             var accessToken = tokenService.GenerateAccessToken(claims);
@@ -40,7 +40,7 @@ namespace ASPNETDockerRestAPI.Business.Implementations
             return new(true, createDate.ToString(DATE_FORMAT), expirationDate.ToString(DATE_FORMAT), accessToken, refreshToken);
         }
 
-        public TokenDto ValidateCredentials(TokenDto tokenDto)
+        public TokenDto? ValidateCredentials(TokenDto tokenDto)
         {
             var accessToken = tokenDto.AccessToken;
             var refreshToken = tokenDto.RefreshToken;
@@ -50,7 +50,7 @@ namespace ASPNETDockerRestAPI.Business.Implementations
             var createDate = DateTime.Now;
             var expirationDate = createDate.AddMinutes(tokenConfiguration.Minutes);
 
-            if (userModel is null || !userModel.RefreshToken.Equals(refreshToken) || userModel.RefreshTokenExpiryTime <= DateTime.Now)
+            if (userModel is null || !string.Equals(userModel.RefreshToken, refreshToken) || userModel.RefreshTokenExpiryTime <= DateTime.Now)
             {
                 return null;
             }
@@ -62,7 +62,7 @@ namespace ASPNETDockerRestAPI.Business.Implementations
             return new(true, createDate.ToString(DATE_FORMAT), expirationDate.ToString(DATE_FORMAT), accessToken, refreshToken);
         }
 
-        public bool RevokeToken(string username)
+        public bool RevokeToken(string? username)
         {
             return userRepository.RevokeToken(username);
         }

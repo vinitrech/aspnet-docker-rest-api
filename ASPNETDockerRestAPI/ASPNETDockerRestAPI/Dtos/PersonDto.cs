@@ -13,18 +13,18 @@ namespace ASPNETDockerRestAPI.Dtos
 
         [JsonPropertyName("first_name")]
         [JsonPropertyOrder(3)]
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         [JsonPropertyName("last_name")]
         [JsonPropertyOrder(4)]
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
         [JsonPropertyName("address")]
         [JsonPropertyOrder(2)]
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         [JsonIgnore]
-        public string Gender { get; set; }
+        public string? Gender { get; set; }
 
         [JsonPropertyName("enabled")]
         [JsonPropertyOrder(5)]

@@ -8,21 +8,26 @@ namespace ASPNETDockerRestAPI.Repository.Implementations
 {
     public class UserRepositoryImplementation(MySqlContext dbContext) : IUserRepository
     {
-        public UserModel ValidateCredentials(UserDto userDto)
+        public UserModel? ValidateCredentials(UserDto userDto)
         {
+            if (string.IsNullOrWhiteSpace(userDto.Password))
+            {
+                return null;
+            }
+
             var encryptedPassword = ComputeHash(userDto.Password, SHA256.Create());
 
-            return dbContext.Users.SingleOrDefault(u => u.UserName.Equals(userDto.UserName) && u.Password.Equals(encryptedPassword));
+            return dbContext.Users.SingleOrDefault(u => string.Equals(u.UserName, userDto.UserName) && string.Equals(u.Password, encryptedPassword));
         }
 
-        public UserModel ValidateCredentials(string username)
+        public UserModel? ValidateCredentials(string? username)
         {
-            return dbContext.Users.SingleOrDefault(u => u.UserName.Equals(username));
+            return dbContext.Users.SingleOrDefault(u => string.Equals(u.UserName, username));
         }
 
-        public bool RevokeToken(string username)
+        public bool RevokeToken(string? username)
         {
-            var user = dbContext.Users.SingleOrDefault(u => u.UserName.Equals(username));
+            var user = dbContext.Users.SingleOrDefault(u => string.Equals(u.UserName, username));
 
             if (user is null)
             {
@@ -35,7 +40,7 @@ namespace ASPNETDockerRestAPI.Repository.Implementations
             return true;
         }
 
-        public UserModel RefreshUserInfo(UserModel userModel)
+        public UserModel? RefreshUserInfo(UserModel userModel)
         {
             var user = dbContext.Users.SingleOrDefault(u => u.Id.Equals(userModel.Id));
 

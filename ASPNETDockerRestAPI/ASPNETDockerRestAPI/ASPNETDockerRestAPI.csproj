@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Folder Include="Hypermedia\Utils\" />
+    <Folder Include="Upload\" />
   </ItemGroup>
 
 </Project>
