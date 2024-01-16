@@ -7,9 +7,11 @@ namespace ASPNETDockerRestAPI.Business.Implementations
         private readonly List<string> _supportedExtensions = [".pdf", ".jpg", ".png", ".jpeg"];
         private readonly string _basePath = Directory.GetCurrentDirectory() + "\\Upload\\";
 
-        public byte[] GetFile(string filename)
+        public async Task<byte[]> GetFileAsync(string filename)
         {
-            throw new NotImplementedException();
+            var filePath = _basePath + filename;
+
+            return await File.ReadAllBytesAsync(filePath);
         }
 
         public async Task<FileDetailsDto?> SaveFile(IFormFile file)
@@ -36,9 +38,23 @@ namespace ASPNETDockerRestAPI.Business.Implementations
             return fileDetail;
         }
 
-        public Task<List<FileDetailsDto>> SaveFiles(IEnumerable<IFormFile> files)
+        public async Task<List<FileDetailsDto>> SaveFiles(IEnumerable<IFormFile> files)
         {
-            throw new NotImplementedException();
+            var filesDetails = new List<FileDetailsDto>();
+
+            foreach (var file in files)
+            {
+                var uploadedFile = await SaveFile(file);
+
+                if (uploadedFile is null)
+                {
+                    continue;
+                }
+
+                filesDetails.Add(uploadedFile);
+            }
+
+            return filesDetails;
         }
     }
 }
