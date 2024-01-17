@@ -26,7 +26,7 @@ namespace ASPNETDockerRestAPI.Business.Implementations
             }
 
             var docName = Path.GetFileName(file.FileName);
-            var destination = Path.Combine(_basePath, "", docName);
+            var destination = Path.Combine(_basePath, docName);
             using var stream = new FileStream(destination, FileMode.Create);
 
             fileDetail.DocumentName = docName;

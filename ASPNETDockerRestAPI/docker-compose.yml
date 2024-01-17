@@ -1,0 +1,39 @@
+version: '3.4'
+
+services:
+  db:
+    image: aspnet-docker-rest-api-db
+    command: mysqld --default-authentication-login-plugin=mysql_native_password
+    restart: always
+    build:
+      context: .
+      dockerfile: ASPNETDockerRestAPI/Database/Dockerfile
+    environment: 
+      TZ: America/Sao_Paulo
+      MYSQL_ROOT_PASSWORD: docker
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+      MYSQL_DATABASE: aspnet_core_docker_rest_api
+    ports:
+      - 3308:3306
+    networks:
+      - apinetwork
+
+  aspnet-docker-rest-api:
+    image: aspnet-docker-rest-api
+    build:
+      context: .
+      dockerfile: ASPNETDockerRestAPI/Dockerfile
+    environment: 
+      TZ: America/Sao_Paulo
+      ASPNETCORE_ENVIRONMENT: Production
+    ports:
+      - 44300:80
+    depends_on:
+      - db
+    networks:
+      - apinetwork
+
+networks:
+  apinetwork:
+    driver: bridge
