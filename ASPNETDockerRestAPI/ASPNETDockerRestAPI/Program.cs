@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Rewrite;
 using ASPNETDockerRestAPI.Services;
 using ASPNETDockerRestAPI.Services.Implementations;
 using ASPNETDockerRestAPI.Configurations;
-using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -28,6 +27,9 @@ var appVersion = "v1";
 var appDescription = $"RESTFUL API with ASP.NET Core 8 - {appVersion}";
 
 var builder = WebApplication.CreateBuilder(args);
+var secrets = new ConfigurationBuilder().
+    AddUserSecrets<Program>()
+    .Build();
 
 // Add services to the container.
 
@@ -37,10 +39,15 @@ builder.Services.AddRouting(options =>
 });
 
 // Configure Token Configuration
-var tokenConfiguration = new TokenConfiguration();
-var rawTokenConfigurations = new ConfigureFromConfigurationOptions<TokenConfiguration>(builder.Configuration.GetSection("TokenConfigurations"));
+var tokenConfiguration = new TokenConfiguration
+{
+    Audience = secrets["token_audience"],
+    Issuer = secrets["token_issuer"],
+    Secret = secrets["token_secret"],
+    Minutes = int.Parse(secrets["token_minutes"]!),
+    DaysToExpiry = int.Parse(secrets["token_days_to_expiry"]!)
+};
 
-rawTokenConfigurations.Configure(tokenConfiguration);
 builder.Services.AddSingleton(tokenConfiguration);
 
 // Configure Authentication and Authorization
@@ -85,7 +92,7 @@ builder.Services.AddControllers();
 builder.Services.AddApiVersioning();
 
 // Configure database
-var connection = builder.Configuration["MySQLConnection:MySQLConnectionString"];
+var connection = secrets["mysql-connection-string"];
 
 builder.Services.AddDbContext<MySqlContext>(options => options.UseMySql(
     connection,
